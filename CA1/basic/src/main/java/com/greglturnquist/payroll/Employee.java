@@ -21,25 +21,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+
 /**
  * @author Greg Turnquist
  */
 // tag::code[]
 @Entity // <1>
-public class Employee {
+class Employee {
 
 	private @Id @GeneratedValue Long id; // <2>
 	private String firstName;
 	private String lastName;
 	private String description;
-
-	private Employee() {}
-
-	public Employee(String firstName, String lastName, String description) {
+	private int jobYears;
+	protected Employee() {}
+	public Employee(String firstName, String lastName, String description, int jobYears) throws InstantiationException {
+		if(firstName == null || lastName == null || description == null || jobYears < 0 || firstName.isEmpty() || lastName.isEmpty() || description.isEmpty())
+			throw new InstantiationException("Please enter a valid first name, last name, description and job years.");
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
+		this.jobYears = jobYears;
 	}
+
 
 	@Override
 	public boolean equals(Object o) {
@@ -47,15 +51,17 @@ public class Employee {
 		if (o == null || getClass() != o.getClass()) return false;
 		Employee employee = (Employee) o;
 		return Objects.equals(id, employee.id) &&
-			Objects.equals(firstName, employee.firstName) &&
-			Objects.equals(lastName, employee.lastName) &&
-			Objects.equals(description, employee.description);
+				Objects.equals(firstName, employee.firstName) &&
+				Objects.equals(lastName, employee.lastName) &&
+				Objects.equals(description, employee.description) &&
+				Objects.equals(jobYears, employee.jobYears);
 	}
+
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, firstName, lastName, description);
+		return Objects.hash(id, firstName, lastName, description,jobYears);
 	}
 
 	public Long getId() {
@@ -89,15 +95,22 @@ public class Employee {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public int getJobYears() {
+		return jobYears;
+	}
+
+	public void setJobYears(int jobYears) {
+		this.jobYears = jobYears;
+	}
 
 	@Override
 	public String toString() {
 		return "Employee{" +
-			"id=" + id +
-			", firstName='" + firstName + '\'' +
-			", lastName='" + lastName + '\'' +
-			", description='" + description + '\'' +
-			'}';
+			"id=" + this.id +
+			", firstName='" + this.firstName + '\'' +
+			", lastName='" + this.lastName + '\'' +
+			", description='" + this.description + '\'' +
+			", jobYears='" + this.jobYears + '\'' + '}';
 	}
 }
 // end::code[]
