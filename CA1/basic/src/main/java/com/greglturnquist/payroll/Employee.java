@@ -34,14 +34,17 @@ class Employee {
 	private String lastName;
 	private String description;
 	private int jobYears;
+
+	private String jobTitle;
 	protected Employee() {}
-	public Employee(String firstName, String lastName, String description, int jobYears) throws InstantiationException {
+	public Employee(String firstName, String lastName, String description, int jobYears, String jobTitle) throws InstantiationException {
 		if(firstName == null || lastName == null || description == null || jobYears < 0 || firstName.isEmpty() || lastName.isEmpty() || description.isEmpty())
 			throw new InstantiationException("Please enter a valid first name, last name, description and job years.");
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
 		this.jobYears = jobYears;
+		this.jobTitle = jobTitle;
 	}
 
 
@@ -54,14 +57,16 @@ class Employee {
 				Objects.equals(firstName, employee.firstName) &&
 				Objects.equals(lastName, employee.lastName) &&
 				Objects.equals(description, employee.description) &&
-				Objects.equals(jobYears, employee.jobYears);
+				Objects.equals(jobYears, employee.jobYears) &&
+				Objects.equals(jobTitle, employee.jobTitle);
+
 	}
 
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, firstName, lastName, description,jobYears);
+		return Objects.hash(id, firstName, lastName, description,jobYears,jobTitle);
 	}
 
 	public Long getId() {
@@ -102,7 +107,8 @@ class Employee {
 	public void setJobYears(int jobYears) {
 		this.jobYears = jobYears;
 	}
-
+	public String getJobTitle() {return jobTitle;}
+	public void setJobTitle(String jobTitle) {this.jobTitle = jobTitle;}
 	@Override
 	public String toString() {
 		return "Employee{" +
@@ -110,7 +116,8 @@ class Employee {
 			", firstName='" + this.firstName + '\'' +
 			", lastName='" + this.lastName + '\'' +
 			", description='" + this.description + '\'' +
-			", jobYears='" + this.jobYears + '\'' + '}';
+			", jobYears='" + this.jobYears + '\'' +
+			", jobTitle='" + this.jobTitle + "'}";
 	}
 }
 // end::code[]

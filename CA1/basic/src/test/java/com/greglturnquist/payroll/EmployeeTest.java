@@ -13,15 +13,17 @@ class EmployeeTest {
         String lastName = "Doe";
         String description = "Developer";
         int jobYears = 5;
+        String jobTitle = "Lead Developer";
 
         // Act
-        Employee employee = new Employee(firstName, lastName, description, jobYears);
+        Employee employee = new Employee(firstName, lastName, description, jobYears, jobTitle);
 
         // Assert
         assertEquals(firstName, employee.getFirstName());
         assertEquals(lastName, employee.getLastName());
         assertEquals(description, employee.getDescription());
         assertEquals(jobYears, employee.getJobYears());
+        assertEquals(jobTitle, employee.getJobTitle());
     }
 
     @Test
@@ -31,15 +33,15 @@ class EmployeeTest {
 
         // Act & Assert
         assertThrows(InstantiationException.class, () -> {
-            new Employee(invalidFirstName, "Doe", "Developer", 5);
+            new Employee(invalidFirstName, "Doe", "Developer", 5,   "Lead Developer");
         });
     }
 
     @Test
     void testEqualsAndHashCode() throws InstantiationException {
         // Arrange
-        Employee employee1 = new Employee("John", "Doe", "Developer", 5);
-        Employee employee2 = new Employee("John", "Doe", "Developer", 5);
+        Employee employee1 = new Employee("John", "Doe", "Developer", 5,    "Lead Developer");
+        Employee employee2 = new Employee("John", "Doe", "Developer", 5,    "Lead Developer");
 
         // Act & Assert
         assertEquals(employee1, employee2, "Employee objects with the same field values should be equal");
@@ -49,29 +51,32 @@ class EmployeeTest {
     @Test
     void testSetAndGetMethods() throws InstantiationException {
         // Arrange
-        Employee employee = new Employee("John", "Doe", "Developer", 5);
+        Employee employee = new Employee("John", "Doe", "Developer", 5, "Lead Developer");
         String firstName = "Jane";
         String lastName = "Smith";
         String description = "Lead Developer";
         int jobYears = 10;
+        String jobTitle = "Lead Developer";
 
         // Act
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
         employee.setDescription(description);
         employee.setJobYears(jobYears);
+        employee.setJobTitle(jobTitle);
 
         // Assert
         assertEquals(firstName, employee.getFirstName());
         assertEquals(lastName, employee.getLastName());
         assertEquals(description, employee.getDescription());
         assertEquals(jobYears, employee.getJobYears());
+        assertEquals(jobTitle, employee.getJobTitle());
     }
 
     @Test
     void testEmployeeId() throws InstantiationException {
         // Arrange
-        Employee employee = new Employee("John", "Doe", "Developer", 5);
+        Employee employee = new Employee("John", "Doe", "Developer", 5, "Developer");
         Long id = 1L;
 
         // Act
@@ -84,13 +89,13 @@ class EmployeeTest {
     @Test
     void testToString() throws InstantiationException {
         // Arrange
-        Employee employee = new Employee("John", "Doe", "Developer", 5);
+        Employee employee = new Employee("John", "Doe", "Developer", 5, "Lead Developer");
 
         // Act
         String employeeString = employee.toString();
 
         // Assert
-        String expectedString = "Employee{id=null, firstName='John', lastName='Doe', description='Developer', jobYears='5'}";
+        String expectedString = "Employee{id=null, firstName='John', lastName='Doe', description='Developer', jobYears='5', jobTitle='Lead Developer'}";
         assertEquals(expectedString, employeeString);
     }
 }
