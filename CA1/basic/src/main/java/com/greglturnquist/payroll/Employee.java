@@ -40,7 +40,7 @@ class Employee {
 	private String email;
 	protected Employee() {}
 	public Employee(String firstName, String lastName, String description, int jobYears, String jobTitle, String email) throws InstantiationException {
-		if(firstName == null || lastName == null || description == null || jobYears < 0 || jobTitle == null || firstName.isEmpty() || lastName.isEmpty() || description.isEmpty() || jobTitle.isEmpty())
+		if(!validateArguments(firstName, lastName, description, jobTitle, jobYears, email))
 			throw new InstantiationException("Please enter a valid first name, last name, description and job years.");
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -48,6 +48,15 @@ class Employee {
 		this.jobYears = jobYears;
 		this.jobTitle = jobTitle;
 		this.email = email;
+	}
+	public boolean validateArguments(String firstName, String lastName, String description, String jobTitle, int jobYears, String email) {
+		if (firstName == null || firstName.trim().isEmpty()) return false;
+		if (lastName == null  || lastName.trim().isEmpty()) return false;
+		if (description == null  || description.trim().isEmpty()) return false;
+		if (jobTitle == null  || jobTitle.trim().isEmpty()) return false;
+		if (jobYears < 0) return false;
+		if (email == null  || email.trim().isEmpty() || !(email.contains("@"))) return false;
+		return true;
 	}
 
 

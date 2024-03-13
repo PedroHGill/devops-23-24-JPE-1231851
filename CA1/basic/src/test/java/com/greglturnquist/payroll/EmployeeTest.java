@@ -104,4 +104,10 @@ class EmployeeTest {
         assertEquals(expectedString, employeeString);
     }
 
+    @Test
+    void testInvalidEmail_shouldReturnFalse() {
+        Employee employee = new Employee();
+        assertFalse(employee.validateArguments("John", "Doe", "Description", "Developer", 5, "john"));
+    }
+
 }
