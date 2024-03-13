@@ -36,15 +36,18 @@ class Employee {
 	private int jobYears;
 
 	private String jobTitle;
+
+	private String email;
 	protected Employee() {}
-	public Employee(String firstName, String lastName, String description, int jobYears, String jobTitle) throws InstantiationException {
-		if(firstName == null || lastName == null || description == null || jobYears < 0 || firstName.isEmpty() || lastName.isEmpty() || description.isEmpty())
+	public Employee(String firstName, String lastName, String description, int jobYears, String jobTitle, String email) throws InstantiationException {
+		if(firstName == null || lastName == null || description == null || jobYears < 0 || jobTitle == null || firstName.isEmpty() || lastName.isEmpty() || description.isEmpty() || jobTitle.isEmpty())
 			throw new InstantiationException("Please enter a valid first name, last name, description and job years.");
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
 		this.jobYears = jobYears;
 		this.jobTitle = jobTitle;
+		this.email = email;
 	}
 
 
@@ -58,7 +61,8 @@ class Employee {
 				Objects.equals(lastName, employee.lastName) &&
 				Objects.equals(description, employee.description) &&
 				Objects.equals(jobYears, employee.jobYears) &&
-				Objects.equals(jobTitle, employee.jobTitle);
+				Objects.equals(jobTitle, employee.jobTitle) &&
+				Objects.equals(email, employee.email);
 
 	}
 
@@ -66,7 +70,7 @@ class Employee {
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, firstName, lastName, description,jobYears,jobTitle);
+		return Objects.hash(id, firstName, lastName, description,jobYears,jobTitle,email);
 	}
 
 	public Long getId() {
@@ -109,6 +113,8 @@ class Employee {
 	}
 	public String getJobTitle() {return jobTitle;}
 	public void setJobTitle(String jobTitle) {this.jobTitle = jobTitle;}
+	public String getEmail() {return email;}
+	public void setEmail(String email) {this.email = email;}
 	@Override
 	public String toString() {
 		return "Employee{" +
@@ -117,7 +123,8 @@ class Employee {
 			", lastName='" + this.lastName + '\'' +
 			", description='" + this.description + '\'' +
 			", jobYears='" + this.jobYears + '\'' +
-			", jobTitle='" + this.jobTitle + "'}";
+			", jobTitle='" + this.jobTitle + '\'' +
+			", email='" + this.email +"'}";
 	}
 }
 // end::code[]
