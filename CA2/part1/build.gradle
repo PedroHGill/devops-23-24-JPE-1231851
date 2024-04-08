@@ -61,11 +61,19 @@ task runClient(type:JavaExec, dependsOn: classes){
 
 task runServer(type:JavaExec, dependsOn: classes){
     group = "DevOps"
-    description = "Launches a chat server that listens on port 8080"
+    description = "Launches a chat server that listens on port 59001"
 
     classpath = sourceSets.main.runtimeClasspath
 
     mainClass = 'basic_demo.ChatServerApp'
 
     args '59001'
+}
+
+task copySources (type: Copy) {
+    group = "DevOps"
+    description = "Copy source files to the target directory"
+
+    from 'src/'
+    into 'backup/'
 }
