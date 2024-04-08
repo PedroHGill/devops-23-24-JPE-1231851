@@ -105,7 +105,7 @@ git commit -am "[Feat] Close #8 Added a task that executes the server"
 git push
 ```
 - ## 5. Add a new task of type Copy to be used to make a backup of the sources of the application.
-### On the build.gradle file, add the following task to copy the src directory to a backup directory:
+### On the build.gradle file, add the following task to copy the src directory to a backup directory
 ```java
 task copySources (type: Copy){
     group = "DevOps"
@@ -118,14 +118,37 @@ task copySources (type: Copy){
 ```bash
 ./gradlew backupSources
 ```
+(I didn't want to commit duplicated code, so I removed the back up source)
 ```bash
 ./backup rm
 ```
-(I didn't want to commit duplicated code, so I removed the back up source)
 ### Commit and push the changes:
 ```bash
 git commit -am "[Feat] Close #9 Added a task that makes a backup of the sources of the application"
 git push
 ```
 
+- ## 6. Add a new task of type Zip to be used to make an archive (i.e., zip file) of the sources of the application.
+### On the build.gradle file, add the following task to zip the src directory
+```java
+task copySources (type: Copy){
+    group = "DevOps"
+    description = "Copy source files to the target directory"
 
+    from 'src/'
+    into 'backup/'
+```
+### To zip use the following command:
+```bash
+./gradlew zip
+```
+### Commit and push the changes:
+```bash
+git commit -am "[Feat] Close #9 Added a task that makes a backup of the sources of the application"
+git push
+```
+- ## 7.At the end of the part 1 of this assignment mark your repository with the tag ca2-part1.
+```bash
+git tag ca2-part1
+git push origin ca2-part1
+```
