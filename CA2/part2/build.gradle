@@ -1,0 +1,49 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.4'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id "org.siouan.frontend-jdk17" version "8.0.0"
+}
+
+group = 'com.greglturnquist'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+frontend {
+	nodeVersion = "16.20.2"
+	assembleScript = "run build"
+	cleanScript = "run clean"
+	checkScript = "run check"
+}
+
+task copyJar(type: Copy) {
+	dependsOn build
+
+	from "$buildDir/libs"
+	into "$projectDir/dist"
+
+	include "*.jar"
+}
+task cleanFiles(type: Delete) {
+	delete fileTree(dir: 'src/main/resources/static/built', include: '**/')
+}
+
+clean.dependsOn(cleanFiles)

@@ -1,42 +1,154 @@
-Gradle Basic Demo
-===================
+# CA2, Part 1 - Build Tools with Gradle
 
-This is a demo application that implements a basic multithreaded chat room server.
+## Create a new directory called CA1.
+```bash
+cd 
+mkdir CA2/part1
+```
 
-The server supports several simultaneous clients through multithreading. When a client connects the server requests a screen name, and keeps requesting a name until a unique one is received. After a client submits a unique name, the server acknowledges it. Then all messages from that client will be broadcast to all other clients that have submitted a unique screen name. A simple "chat protocol" is used for managing a user's registration/leaving and message broadcast.
+- ## 1. Download and commit to your repository the example application.
+```bash
+git clone https://bitbucket.org/pssmatos/gradle_basic_demo/
+rm ~/CA2/part1/.git
+git commit -am "[Feat] Close #6 Cloned repository." 
+git push
+```
 
+- ## 2. Read the instructions available in the readme.md file and experiment with the application.
+```bash
+cd gradle_basic_demo
+```
 
-Prerequisites
--------------
+- ## Build
+### To build a .jar file with the application:
 
- * Java JDK 8 (or newer)
- * Apache Log4J 2
- * Gradle 7.4.1 (if you do not use the gradle wrapper in the project)
-   
+```bash
+./gradlew build
+```
 
-Build
------
+- ## Run the server
+### Open a terminal and execute the following command from the project's root directory:
+```bash
+java -cp build/libs/basic_demo-0.1.0.jar basic_demo.ChatServerApp 59001
+```
 
-To build a .jar file with the application:
+- ## Run a client
+### Open another terminal and execute the following gradle task from the project's root directory:
+```bash
+./gradlew runClient
+```
+(After executing the build command, the server and clients need to be launched in separate terminal windows. Initially, the server should be started first.
+Subsequently, when opening windows for the clients, they will prompt the users to input their names. Following this, communication between clients can be initiated, allowing messages to be exchanged.)
 
-    % ./gradlew build 
+### Commit and push the changes:
+```bash
+git commit -am "[Feat] Close #8 Added a task that executes the server"
+git push
+```
 
-Run the server
---------------
+- ## 3. Add a new task to execute the server.
+On the build.gradle file, add the following task to the server:
+```bash
+task runServer(type:JavaExec, dependsOn: classes){
+    group = "DevOps"
+    description = "Launches a chat server that listens on port 59001"
 
-Open a terminal and execute the following command from the project's root directory:
+    classpath = sourceSets.main.runtimeClasspath
 
-    % java -cp build/libs/basic_demo-0.1.0.jar basic_demo.ChatServerApp <server port>
+    mainClass = 'basic_demo.ChatServerApp'
 
-Substitute <server port> by a valid por number, e.g. 59001
+    args '59001'
+}
+```
 
-Run a client
-------------
+### From now on, the server can be run by using the following command.
+```bash
+./gradlew runServer
+```
+(We can use this command in one terminal to start the server. Then, we can use 2 different terminals to start a chat between two users)
 
-Open another terminal and execute the following gradle task from the project's root directory:
+### Commit and push the changes:
+```bash
+git commit -am "[Test] Close #7 Add a simple unit test in AppTest class."
+git push
+```
 
-    % ./gradlew runClient
+- ## 4. Add a simple unit test and update the gradle script so that it is able to execute the
+test.
+Create a test directory on the src directory and add the following test to the Apptest.java file:
+```java
+@Test
+public void testAppHasAGreeting() {
+        App classUnderTest = new App();
+        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+        }
+}
+```
 
-The above task assumes the chat server's IP is "localhost" and its port is "59001". If you whish to use other parameters please edit the runClient task in the "build.gradle" file in the project's root directory.
+###  The unit tests require junit 4.12 to execute. Dot not forget to add this dependency in gradle.
+```java
+dependencies {
+    // Use Apache Log4J for logging
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
+    testImplementation 'junit:junit:4.12'
+}
+```
 
-To run several clients, you just need to open more terminals and repeat the invocation of the runClient gradle task
+### Run the test with the following command.
+```bash
+./gradlew test
+```
+### Commit and push the changes:
+```bash
+git commit -am "[Feat] Close #8 Added a task that executes the server"
+git push
+```
+- ## 5. Add a new task of type Copy to be used to make a backup of the sources of the application.
+### On the build.gradle file, add the following task to copy the src directory to a backup directory
+```java
+task copySources (type: Copy){
+    group = "DevOps"
+    description = "Copy source files to the target directory"
+
+    from 'src/'
+    into 'backup/'
+```
+### To do the backup use the following command:
+```bash
+./gradlew backupSources
+```
+(I didn't want to commit duplicated code, so I removed the back up source)
+```bash
+./backup rm
+```
+### Commit and push the changes:
+```bash
+git commit -am "[Feat] Close #9 Added a task that makes a backup of the sources of the application"
+git push
+```
+
+- ## 6. Add a new task of type Zip to be used to make an archive (i.e., zip file) of the sources of the application.
+### On the build.gradle file, add the following task to zip the src directory
+```java
+task copySources (type: Copy){
+    group = "DevOps"
+    description = "Copy source files to the target directory"
+
+    from 'src/'
+    into 'backup/'
+```
+### To zip use the following command:
+```bash
+./gradlew zip
+```
+### Commit and push the changes:
+```bash
+git commit -am "[Feat] Close #9 Added a task that makes a backup of the sources of the application"
+git push
+```
+- ## 7.At the end of the part 1 of this assignment mark your repository with the tag ca2-part1.
+```bash
+git tag ca2-part1
+git push origin ca2-part1
+```
