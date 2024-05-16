@@ -1,0 +1,49 @@
+Vagrant.configure("2") do |config|
+  # Specify the base box. Make sure this box is compatible with Hyper-V.
+  config.vm.box = "hypervv/Ubuntu2004"
+
+  # Default provider configuration
+  config.vm.provider "hyperv" do |hv|
+    hv.cpus = 2          # Number of CPUs
+    hv.memory = 1024     # Memory size in MB
+    hv.maxmemory = 2048  # Maximum dynamic memory in MB
+    hv.linked_clone = true # Use linked clones to speed up VM creation
+  end
+
+  # General provisioning script that runs on all VMs
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update -y
+    sudo apt-get install -y iputils-ping avahi-daemon libnss-mdns unzip openjdk-17-jdk-headless
+  SHELL
+
+  # Configuration for the database VM
+  config.vm.define "db" do |db|
+    db.vm.hostname = "db"
+    db.vm.network "private_network", ip: "192.168.56.11"
+
+    # Specific provisioning for the database VM
+    db.vm.provision "shell", inline: <<-SHELL
+      wget https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
+      java -cp h2-1.4.200.jar org.h2.tools.Server -web -webAllowOthers -tcp -tcpAllowOthers -ifNotExists > ~/h2-server.log 2>&1 &
+    SHELL
+  end
+
+  # Configuration for the webserver VM
+  config.vm.define "web" do |web|
+    web.vm.hostname = "web"
+    web.vm.network "private_network", ip: "192.168.56.10"
+
+    # Webserver specific provisioning
+    web.vm.provision "shell", inline: <<-SHELL
+      sudo apt install -y tomcat9 tomcat9-admin
+      # Clone the repository
+      git clone https://github.com/PedroHGill/devops-23-24-JPE-1231851.git
+      sudo chown -R vagrant:vagrant /home/vagrant/devops-23-24-JPE-1231851/
+
+      cd devops-23-24-JPE-1231851/CA2/part2
+      chmod +x ./gradlew
+      ./gradlew build
+      nohup ./gradlew bootRun > /home/vagrant/spring-boot-app.log 2>&1 &
+    SHELL
+  end
+end
