@@ -8,6 +8,14 @@ two different Docker images and running the chat server in a container. This pro
 fundamental concepts of Docker, including Dockerfiles, images, and containers, as well as practicing Docker commands 
 and exploring Docker Hub for image publishing.
 
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Prerequisites](#prerequisites)
+3. [Version 1: Building Chat Server Inside Docker Container](#version-1-building-chat-server-inside-docker-container)
+4. [Version 2: Building Chat Server on Host Machine](#version-2-building-chat-server-on-host-machine)
+5. [Conclusion](#conclusion)
+
 ## Overview
 
 In this part of the assignment, you are required to:
@@ -95,8 +103,8 @@ ocker run --name ca4-part1v1 -p 8080:59001 ca4-part1v1
 ```
 4. To push the image to Docker Hub, use the following commands:
 ```bash
-docker tag chatServer <your_dockerhub_username>/chatServer
-docker push <your_dockerhub_username>/chatServer
+docker tag ca4-part1v1 <your_dockerhub_username>/ca4-part1v1
+docker push <your_dockerhub_username>/ca4-part1v1
 ```
 
 ## Version 2: Building Chat Server on Host Machine
@@ -135,8 +143,8 @@ docker run --name ca4-part1v2 -p 8080:8080 ca4-part1v2
 ```
 5. To push the image to Docker Hub, use the following commands:
 ```bash
-docker tag chatServer <your_dockerhub_username>/chatServer
-docker push <your_dockerhub_username>/chatServer
+docker tag ca4-part1v2 <your_dockerhub_username>/ca4-part1v2
+docker push <your_dockerhub_username>/ca4-part1v2
 ```
 
 ## Conclusion
