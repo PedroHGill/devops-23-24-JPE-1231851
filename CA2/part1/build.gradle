@@ -56,7 +56,7 @@ task runClient(type:JavaExec, dependsOn: classes){
 
     mainClass = 'basic_demo.ChatClientApp'
 
-    args 'localhost', '59001'
+    args 'localhost', '8080'
 }
 
 task runServer(type:JavaExec, dependsOn: classes){
@@ -67,7 +67,7 @@ task runServer(type:JavaExec, dependsOn: classes){
 
     mainClass = 'basic_demo.ChatServerApp'
 
-    args '59001'
+    args '8080'
 }
 
 task copySources (type: Copy) {
