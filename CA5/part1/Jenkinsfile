@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    environment {
+        REPO_URL = 'https://github.com/PedroHGill/devops-23-24-JPE-1231851.git'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out the code...'
+                git url: "${REPO_URL}", branch: 'master'
+            }
+        }
+
+        stage('Assemble') {
+            steps {
+                dir('CA2/part1/') {
+                    echo 'Assembling the application...'
+                    bat './gradlew assemble'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('CA2/part1/') {
+                    echo 'Running unit tests...'
+                    bat './gradlew test'
+                    junit 'build/test-results/test/*.xml'
+                }
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                dir('CA2/part1/') {
+                    echo 'Archiving artifacts...'
+                    archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                }
+            }
+        }
+    }
+}
